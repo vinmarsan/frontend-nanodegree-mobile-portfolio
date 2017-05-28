@@ -1,63 +1,39 @@
 var gulp = require('gulp')
-  ,imagemin = require('gulp-imagemin')
-  ,clean = require('gulp-clean')
-  ,uglify = require('gulp-uglify')
-  ,usemin = require('gulp-usemin')
-  ,cssmin = require('gulp-cssmin')
-  ,browserSync = require('browser-sync').create()
-  ,jshint = require('gulp-jshint')
-  ,jshintStylish = require('jshint-stylish')
-  ,csslint = require('gulp-csslint');
+,concat = require('gulp-concat')
+,minify = require('gulp-minify-css')
+,inline = require('gulp-inline')
+,uglify = require('gulp-uglify')
+,imagemin = require('gulp-imagemin')
+,htmlmin = require('gulp-htmlmin');
 
-gulp.task('default', ['copy'], function() {
-	gulp.start('build-img', 'usemin');
-});
-
-gulp.task('copy', ['clean'], function() {
-	return gulp.src('src/**/*')
-		.pipe(gulp.dest('dist'));
-});
-
-gulp.task('clean', function() {
-	return gulp.src('dist')
-		.pipe(clean());
-});
-
+// Compacta as imagens
 gulp.task('build-img', function() {
+  return gulp.src('src/**/*')
+  .pipe(imagemin([
+    imagemin.jpegtran({progressive : true})
+  ]))
+ .pipe(gulp.dest('dist/'))
 
-  return gulp.src('dist/img/**/*')
-    .pipe(imagemin())
-    .pipe(gulp.dest('dist/img'));
 });
 
-gulp.task('usemin', function() {
-  return gulp.src('dist/**/*.html')
-    .pipe(usemin({
-      js: [uglify]
-    }))
-    .pipe(gulp.dest('dist'));
+
+// Faz inlining do CSS e JavaScript no HTML
+
+gulp.task('inline', function() {
+  return gulp.src('index.html')
+  .pipe(inline({
+    base: '/',
+    // Comprime os scripts
+    js: uglify,
+ // Comprime as folhas de estilo
+    css: minify,
+    disabledTypes:['img']
+ }))
+  .pipe(htmlmin({
+    collapseWhitespace: true
+  }))
+ // Comprime o HTML
+  .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('server', function() {
-    browserSync.init({
-        server: {
-            baseDir: 'src'
-        }
-    });
-
-    gulp.watch('src/**/*').on('change', browserSync.reload);
-
-    gulp.watch('src/**/*.js').on('change', function(event) {
-        console.log("Linting " + event.path);
-        gulp.src(event.path)
-            .pipe(jshint())
-            .pipe(jshint.reporter(jshintStylish));
-    });
-
-    gulp.watch('src/**/*.css').on('change', function(event) {
-        console.log("Linting " + event.path);
-        gulp.src(event.path)
-            .pipe(csslint())
-            .pipe(csslint.reporter());
-    });
-});
+gulp.task('default', ['build-img', 'inline'], function(){});
