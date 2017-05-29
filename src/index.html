@@ -11,8 +11,8 @@
     <!--<link href="//fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">-->
 
     <!-- build:css css/index.min.css-->
-    <link href="css/style.css" rel="stylesheet" inline>
-    <link href="css/print.css" rel="stylesheet" inline>
+    <link href="css/style.min.css" rel="stylesheet" >
+    <link href="css/print.min.css" rel="stylesheet" media ="print" >
     <!-- endbuild -->
 
 
@@ -32,19 +32,19 @@
       <div class="content">
         <ul>
           <li>
-            <img src="img/port1.JPG">
+            <img src="img/port1.jpg">
             <a href="project-2048.html">Build Your Own 2048!</a>
             <p>I made my own version of 2048. How cool is that!?</p>
           </li>
 
           <li>
-            <img src="img/port2.JPG">
+            <img src="img/port2.jpg">
             <a href="project-webperf.html">Website Performance Optimization</a>
             <p>Hey... this class looks familiar.</p>
           </li>
 
           <li>
-            <img src="img/port3.JPG">
+            <img src="img/port3.jpg">
             <a href="project-mobile.html">Mobile Web Development</a>
             <p>Making mobile apps isn't so hard after all.</p>
           </li>
@@ -62,7 +62,8 @@
       </footer>
     </div>
     <!--Mover os scripts para o fim da página para melhorar a performace-->
-    <script>
+    <!-- build:js js/index.min.js -->
+    <script async defer>
       (function(w,g){w['GoogleAnalyticsObject']=g;
       w[g]=w[g]||function(){(w[g].q=w[g].q||[]).push(arguments)};w[g].l=1*new Date();})(window,'ga');
 
@@ -72,7 +73,7 @@
     </script>
     <!--Usar o web loader diminui o impacto das fontes no carregamento-->
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
-	<script>
+	<script async>
 		WebFont.load({
 			google: {
 				families: ['Open Sans:400,700']
@@ -81,9 +82,9 @@
 	</script>
   <!--Async para não bloquear o render-->
 
-  <!-- build:js js/index.min.js -->
+
   <!--<script src="http://www.google-analytics.com/analytics.js" async></script>-->
-  <script src="js/perfmatters.js" async inline></script>
+  <script src="js/perfmatters.js" async defer ></script>
   <!-- endbuild -->
 
   </body>

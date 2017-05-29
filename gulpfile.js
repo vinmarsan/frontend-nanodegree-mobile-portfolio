@@ -1,39 +1,42 @@
 var gulp = require('gulp')
 ,concat = require('gulp-concat')
+,clean = require('gulp-clean')
 ,minify = require('gulp-minify-css')
 ,inline = require('gulp-inline')
 ,uglify = require('gulp-uglify')
 ,imagemin = require('gulp-imagemin')
-,htmlmin = require('gulp-htmlmin');
+,usemin = require('gulp-usemin')
+,cssmin = require('gulp-cssmin')
+,htmlmin = require('gulp-htmlmin')
+,cleanCss = require('gulp-clean-css')
+,autoprefixer = require('gulp-autoprefixer');
 
-// Compacta as imagens
+gulp.task('default', ['copy'], function() {
+	gulp.start('build-img', 'usemin');
+});
+
+gulp.task('copy', ['clean'], function() {
+	return gulp.src('src/**/*')
+		.pipe(gulp.dest('dist'));
+});
+
+gulp.task('clean', function() {
+	return gulp.src('dist')
+		.pipe(clean());
+});
+
 gulp.task('build-img', function() {
-  return gulp.src('src/**/*')
-  .pipe(imagemin([
-    imagemin.jpegtran({progressive : true})
-  ]))
- .pipe(gulp.dest('dist/'))
 
+  return gulp.src('src/img/**/*')
+    .pipe(imagemin())
+    .pipe(gulp.dest('dist/img'));
 });
 
-
-// Faz inlining do CSS e JavaScript no HTML
-
-gulp.task('inline', function() {
+gulp.task('usemin', function() {
   return gulp.src('index.html')
-  .pipe(inline({
-    base: '/',
-    // Comprime os scripts
-    js: uglify,
- // Comprime as folhas de estilo
-    css: minify,
-    disabledTypes:['img']
- }))
-  .pipe(htmlmin({
-    collapseWhitespace: true
-  }))
- // Comprime o HTML
-  .pipe(gulp.dest('dist/'));
+    .pipe(usemin({
+      js: [uglify],
+      css: [autoprefixer]
+    }))
+    .pipe(gulp.dest('dist'));
 });
-
-gulp.task('default', ['build-img', 'inline'], function(){});
