@@ -5,7 +5,7 @@
 **3**. Usei o gulp.js para minificar as imagens e arquivos html e css
 
 ## Ferramentas Usadas
-**1**. Webloader - Usado para carregar as fontes do goolgle e dimuit o impacto no carregamento
+**1**. Webloader - Usado para carregar as fontes do goolgle e diminui o impacto no carregamento 
 **2**. Gulp - Usado para criar as pastas dist (distribuição) e src (desenvolvimento) e minificar imagens e arquivos
 
 ## Como abrir o projeto
